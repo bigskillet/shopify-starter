@@ -16,6 +16,7 @@ themeKit.command('deploy', {
 }).then(() => {
   themeKit.command('watch', {
     env,
+    //config: "config.yml",
     notify: '.theme.update'
   });
 }).then(() => {
