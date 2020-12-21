@@ -61,8 +61,7 @@ module.exports = {
         },
         {
           from: 'src/assets/**/*',
-          to: 'assets/',
-          flatten: true,
+          to: 'assets/[name].[ext]',
           noErrorOnMissing: true
         },
         {
