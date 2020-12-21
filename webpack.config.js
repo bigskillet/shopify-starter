@@ -1,6 +1,5 @@
 const path = require('path');
 const globby = require('globby');
-const yargs = require('yargs');
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -8,8 +7,6 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const WebpackShellPluginNext = require('webpack-shell-plugin-next');
-
-const { env = 'development' } = yargs(process.argv).argv;
 
 module.exports = {
   entry:
@@ -73,17 +70,59 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'assets/[name].css.liquid',
     }),
-    new WebpackShellPluginNext({
-      onBuildExit:{
-        scripts: process.env.NODE_ENV == 'development'
-          ? env == 'staging'
-            ? ['node theme.watch.js --env=staging']
-            : ['node theme.watch.js']
-          : [],
-        parallel: true
-      }
-    })
-  ],
+    process.env.NODE_ENV == 'development' &&
+      new WebpackShellPluginNext({
+        onBuildStart: {
+          scripts: [
+            'echo -- Starting build...',
+            'shopify-themekit watch --notify=.theme.update',
+          ],
+          parallel: true,
+        },
+        onBuildEnd: {
+          scripts: [
+            'echo -- Build complete!',
+            'echo -- Deploying theme...',
+            'shopify-themekit deploy',
+            'echo -- Deploy complete!'
+          ],
+          blocking: true
+        },
+        onBuildExit:{
+          scripts: [
+            'echo -- Starting server...',
+            () => {
+              const os = require('os');
+              const fs = require('fs');
+              const yaml = require('js-yaml');
+              const config = yaml.load(fs.readFileSync('config.yml', 'UTF8'));
+              const options = '/?_fd=0&pb=0&preview_theme_id=';
+              const browserSync = require('browser-sync');
+
+              browserSync({
+                files: '.theme.update',
+                proxy: 'https://' + config.development.store + options + config.development.theme_id,
+                https: {
+                  key: path.resolve(os.homedir(), '.localhost_ssl/server.key'),
+                  cert: path.resolve(os.homedir(), '.localhost_ssl/server.crt')
+                },
+                reloadDelay: 1500,
+                notify: false,
+                snippetOptions: {
+                  rule: {
+                    match: /<\/body>/i,
+                    fn: (snippet, match) => {
+                      return snippet + match;
+                    }
+                  }
+                }
+              });
+            }
+          ],
+          parallel: true
+        }
+      })
+  ].filter(Boolean),
   optimization: {
     minimizer: [
       new CssMinimizerPlugin({
