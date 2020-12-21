@@ -8,8 +8,7 @@
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
   {{ content_for_header }}
-  {{ 'theme.css' | asset_url | stylesheet_tag }}
-  {{ 'theme.js' | asset_url | script_tag }}
+  {%- render 'style-tags', layout: 'theme' -%}
 </head>
 <body>
 
@@ -40,5 +39,6 @@
   <main role="main">
     {{ content_for_layout }}
   </main>
+  {%- render 'script-tags', layout: 'theme' -%}
 </body>
 </html>

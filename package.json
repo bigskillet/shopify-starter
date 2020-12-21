@@ -3,7 +3,7 @@
   "scripts": {
     "start": "NODE_ENV=development webpack --watch",
     "build": "NODE_ENV=production webpack",
-    "deploy": "theme deploy",
+    "deploy": "yarn build && theme deploy",
     "theme": "shopify-themekit"
   },
   "devDependencies": {
@@ -12,7 +12,9 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.3.2",
     "css-loader": "^5.0.1",
+    "css-minimizer-webpack-plugin": "^1.1.5",
     "file-loader": "^6.2.0",
+    "globby": "^11.0.1",
     "js-yaml": "^3.14.0",
     "mini-css-extract-plugin": "^1.3.2",
     "postcss-loader": "^4.1.0",
@@ -22,5 +24,6 @@
     "webpack-cli": "^4.2.0",
     "webpack-shell-plugin-next": "^2.0.8",
     "yargs": "^16.1.1"
-  }
+  },
+  "dependencies": {}
 }
