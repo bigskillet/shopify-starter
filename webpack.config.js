@@ -107,7 +107,6 @@ module.exports = {
                   key: path.resolve(os.homedir(), '.localhost_ssl/server.key'),
                   cert: path.resolve(os.homedir(), '.localhost_ssl/server.crt')
                 },
-                reloadDelay: 1500,
                 notify: false,
                 snippetOptions: {
                   rule: {
