@@ -10,7 +10,7 @@
   {{ content_for_header }}
   {%- render 'style-tags', layout: 'theme' -%}
 </head>
-<body>
+<body class="flex flex-col min-h-screen font-body">
 
   {% for link in linklists.main-menu.links %}
     {% assign child_list_handle = link.title | handleize %}
@@ -36,9 +36,10 @@
     {% endif %}
   {% endif %}
 
-  <main role="main">
+  <main class="flex-grow">
     {{ content_for_layout }}
   </main>
+
   {%- render 'script-tags', layout: 'theme' -%}
 </body>
 </html>

@@ -69,7 +69,7 @@ module.exports = {
       ]
     }),
     new MiniCssExtractPlugin({
-      filename: 'assets/[name].css.liquid',
+      filename: 'assets/[name].css',
     }),
     process.env.NODE_ENV == 'development' &&
       new WebpackShellPluginNext({
