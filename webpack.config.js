@@ -74,23 +74,23 @@ module.exports = {
       new WebpackShellPluginNext({
         onBuildStart: {
           scripts: [
-            'echo -- Starting build...',
+            'echo Starting build...',
             'shopify-themekit watch --notify=.theme.update',
           ],
           parallel: true,
         },
         onBuildEnd: {
           scripts: [
-            'echo -- Build complete!',
-            'echo -- Deploying theme...',
+            'echo Build complete!',
+            'echo Deploying theme...',
             'shopify-themekit deploy',
-            'echo -- Deploy complete!'
+            'echo Deploy complete!'
           ],
           blocking: true
         },
         onBuildExit:{
           scripts: [
-            'echo -- Starting server...',
+            'echo Starting server...',
             () => {
               const os = require('os');
               const fs = require('fs');
