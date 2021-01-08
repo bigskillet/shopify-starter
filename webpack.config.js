@@ -11,8 +11,8 @@ const WebpackShellPluginNext = require('webpack-shell-plugin-next');
 module.exports = {
   entry:
     globby.sync([
-      './src/scripts/**/*.js',
-      '!./src/scripts/sections/*.js'
+      './src/scripts/layout/*.js',
+      './src/scripts/templates/**/*.js'
     ]).reduce((acc, path) => {
       const entry = path.replace(/^.*[\\\/]/, '').replace('.js','');
       acc[entry] = path;
