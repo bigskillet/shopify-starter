@@ -13,7 +13,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^7.0.0",
     "css-loader": "^5.0.1",
-    "css-minimizer-webpack-plugin": "^1.1.5",
+    "cssnano": "^4.1.10",
     "file-loader": "^6.2.0",
     "globby": "^11.0.2",
     "js-yaml": "^4.0.0",

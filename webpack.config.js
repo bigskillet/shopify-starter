@@ -3,7 +3,6 @@ const globby = require('globby');
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const WebpackShellPluginNext = require('webpack-shell-plugin-next');
@@ -69,7 +68,7 @@ module.exports = {
       ]
     }),
     new MiniCssExtractPlugin({
-      filename: 'assets/[name].css',
+      filename: 'assets/[name].css.liquid'
     }),
     process.env.NODE_ENV == 'development' &&
       new WebpackShellPluginNext({
@@ -125,18 +124,6 @@ module.exports = {
   ].filter(Boolean),
   optimization: {
     minimizer: [
-      new CssMinimizerPlugin({
-        minimizerOptions: {
-          preset: [
-            'default',
-            {
-              discardComments: {
-                removeAll: true
-              }
-            }
-          ]
-        }
-      }),
       new TerserPlugin({
         extractComments: false
       })
