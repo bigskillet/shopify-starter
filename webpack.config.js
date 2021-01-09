@@ -74,23 +74,20 @@ module.exports = {
       new WebpackShellPluginNext({
         onBuildStart: {
           scripts: [
-            'echo Starting build...',
-            'shopify-themekit watch --notify=.theme.update',
-          ],
-          parallel: true,
+            'echo Starting build...'
+          ]
         },
         onBuildEnd: {
           scripts: [
-            'echo Build complete!',
             'echo Deploying theme...',
-            'shopify-themekit deploy',
-            'echo Deploy complete!'
+            'shopify-themekit deploy'
           ],
           blocking: true
         },
-        onBuildExit:{
+        onBuildExit: {
           scripts: [
             'echo Starting server...',
+            'shopify-themekit watch --notify=.theme.update',
             () => {
               const os = require('os');
               const fs = require('fs');
@@ -98,24 +95,25 @@ module.exports = {
               const config = yaml.load(fs.readFileSync('config.yml', 'UTF8'));
               const options = '/?_fd=0&pb=0&preview_theme_id=';
               const browserSync = require('browser-sync');
-
-              browserSync({
-                files: '.theme.update',
-                proxy: 'https://' + config.development.store + options + config.development.theme_id,
-                https: {
-                  key: path.resolve(os.homedir(), '.localhost_ssl/server.key'),
-                  cert: path.resolve(os.homedir(), '.localhost_ssl/server.crt')
-                },
-                notify: false,
-                snippetOptions: {
-                  rule: {
-                    match: /<\/body>/i,
-                    fn: (snippet, match) => {
-                      return snippet + match;
+              setTimeout(() => {
+                browserSync({
+                  files: '.theme.update',
+                  proxy: 'https://' + config.development.store + options + config.development.theme_id,
+                  https: {
+                    key: path.resolve(os.homedir(), '.localhost_ssl/server.key'),
+                    cert: path.resolve(os.homedir(), '.localhost_ssl/server.crt')
+                  },
+                  notify: false,
+                  snippetOptions: {
+                    rule: {
+                      match: /<\/body>/i,
+                      fn: (snippet, match) => {
+                        return snippet + match;
+                      }
                     }
                   }
-                }
-              });
+                });
+              }, 3500);
             }
           ],
           parallel: true
