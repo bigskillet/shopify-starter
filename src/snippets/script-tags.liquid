@@ -1,6 +1,0 @@
-{%- capture layout_scripts -%}{{- layout -}}.js{%- endcapture -%}
-{{- layout_scripts | asset_url | script_tag -}}
-{% if template %}
-  {%- capture template_scripts -%}{{- template | remove: 'customers/' -}}.js{%- endcapture -%}
-  {{- template_scripts | asset_url | script_tag -}}
-{% endif %}

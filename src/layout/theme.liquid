@@ -7,8 +7,15 @@
   <meta name="description" content="{{ page_description | escape }}">
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+
   {{ content_for_header }}
-  {%- render 'style-tags', layout: 'theme' -%}
+
+  {{- 'theme.css' | asset_url | stylesheet_tag -}}
+  {% if template %}
+    {%- capture template_styles -%}{{- template | remove: 'customers/' -}}.css{%- endcapture -%}
+    {{- template_styles | asset_url | stylesheet_tag -}}
+  {% endif %}
+
 </head>
 <body class="flex flex-col min-h-screen font-body">
 
@@ -40,6 +47,11 @@
     {{ content_for_layout }}
   </main>
 
-  {%- render 'script-tags', layout: 'theme' -%}
+  {{- 'theme.js' | asset_url | script_tag -}}
+  {% if template %}
+    {%- capture template_scripts -%}{{- template | remove: 'customers/' -}}.js{%- endcapture -%}
+    {{- template_scripts | asset_url | script_tag -}}
+  {% endif %}
+
 </body>
 </html>

@@ -1,6 +1,0 @@
-{%- capture layout_styles -%}{{- layout -}}.css{%- endcapture -%}
-{{- layout_styles | asset_url | stylesheet_tag -}}
-{% if template %}
-  {%- capture template_styles -%}{{- template | remove: 'customers/' -}}.css{%- endcapture -%}
-  {{- template_styles | asset_url | stylesheet_tag -}}
-{% endif %}
