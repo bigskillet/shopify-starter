@@ -93,12 +93,14 @@ module.exports = {
               const fs = require('fs');
               const yaml = require('js-yaml');
               const config = yaml.load(fs.readFileSync('config.yml', 'UTF8'));
+              const store = config.development.store;
               const options = '/?_fd=0&pb=0&preview_theme_id=';
+              const theme_id = config.development.theme_id;
               const browserSync = require('browser-sync');
               setTimeout(() => {
                 browserSync({
                   files: '.theme.update',
-                  proxy: 'https://' + config.development.store + options + config.development.theme_id,
+                  proxy: 'https://' + store + options + theme_id,
                   https: {
                     key: path.resolve(os.homedir(), '.localhost_ssl/server.key'),
                     cert: path.resolve(os.homedir(), '.localhost_ssl/server.crt')
