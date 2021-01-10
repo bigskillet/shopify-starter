@@ -69,59 +69,8 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'assets/[name].css.liquid'
-    }),
-    process.env.NODE_ENV == 'development' &&
-      new WebpackShellPluginNext({
-        onBuildStart: {
-          scripts: [
-            'echo Starting build...'
-          ]
-        },
-        onBuildEnd: {
-          scripts: [
-            'echo Deploying theme...',
-            'shopify-themekit deploy'
-          ],
-          blocking: true
-        },
-        onBuildExit: {
-          scripts: [
-            'echo Starting server...',
-            'shopify-themekit watch --notify=.theme.update',
-            () => {
-              const os = require('os');
-              const fs = require('fs');
-              const yaml = require('js-yaml');
-              const config = yaml.load(fs.readFileSync('config.yml', 'UTF8'));
-              const store = config.development.store;
-              const options = '/?_fd=0&pb=0&preview_theme_id=';
-              const theme_id = config.development.theme_id;
-              const browserSync = require('browser-sync');
-              setTimeout(() => {
-                browserSync({
-                  files: '.theme.update',
-                  proxy: 'https://' + store + options + theme_id,
-                  https: {
-                    key: path.resolve(os.homedir(), '.localhost_ssl/server.key'),
-                    cert: path.resolve(os.homedir(), '.localhost_ssl/server.crt')
-                  },
-                  notify: false,
-                  snippetOptions: {
-                    rule: {
-                      match: /<\/body>/i,
-                      fn: (snippet, match) => {
-                        return snippet + match;
-                      }
-                    }
-                  }
-                });
-              }, 3500);
-            }
-          ],
-          parallel: true
-        }
-      })
-  ].filter(Boolean),
+    })
+  ],
   optimization: {
     minimizer: [
       new TerserPlugin({
@@ -134,4 +83,59 @@ module.exports = {
       })
     ]
   }
+};
+
+if (process.env.NODE_ENV == 'development') {
+  module.exports.plugins.push(
+    new WebpackShellPluginNext({
+      onBuildStart: {
+        scripts: [
+          'echo Starting build...'
+        ]
+      },
+      onBuildEnd: {
+        scripts: [
+          'echo Deploying theme...',
+          'shopify-themekit deploy'
+        ],
+        blocking: true
+      },
+      onBuildExit: {
+        scripts: [
+          'echo Starting server...',
+          'shopify-themekit watch --notify=.theme.update',
+          () => {
+            const os = require('os');
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+            const config = yaml.load(fs.readFileSync('config.yml', 'UTF8'));
+            const store = config.development.store;
+            const options = '/?_fd=0&pb=0&preview_theme_id=';
+            const theme_id = config.development.theme_id;
+            const browserSync = require('browser-sync');
+            setTimeout(() => {
+              browserSync({
+                files: '.theme.update',
+                proxy: 'https://' + store + options + theme_id,
+                https: {
+                  key: path.resolve(os.homedir(), '.localhost_ssl/server.key'),
+                  cert: path.resolve(os.homedir(), '.localhost_ssl/server.crt')
+                },
+                notify: false,
+                snippetOptions: {
+                  rule: {
+                    match: /<\/body>/i,
+                    fn: (snippet, match) => {
+                      return snippet + match;
+                    }
+                  }
+                }
+              });
+            }, 3500);
+          }
+        ],
+        parallel: true
+      }
+    })
+  )
 };
