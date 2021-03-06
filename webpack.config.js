@@ -19,7 +19,7 @@ module.exports = {
   }, {}),
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'assets/[name].js',
+    filename: 'assets/[name].js'
   },
   module: {
     rules: [
@@ -45,21 +45,29 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/**/*',
-          to: '[folder]/[name].[ext]',
-          globOptions: {
-            ignore: [
-              '**/assets',
-              '**/scripts',
-              '**/styles',
-              '**/templates'
-            ]
-          }
+          from: 'src/assets/**/*',
+          to: 'assets/[name][ext]',
+          noErrorOnMissing: true
         },
         {
-          from: 'src/assets/**/*',
-          to: 'assets/[name].[ext]',
-          noErrorOnMissing: true
+          from: 'src/config',
+          to: 'config'
+        },
+        {
+          from: 'src/layout',
+          to: 'layout'
+        },
+        {
+          from: 'src/locales',
+          to: 'locales'
+        },
+        {
+          from: 'src/sections',
+          to: 'sections'
+        },
+        {
+          from: 'src/snippets',
+          to: 'snippets'
         },
         {
           from: 'src/templates',
