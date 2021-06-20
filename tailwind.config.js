@@ -9,7 +9,7 @@ module.exports = {
       ...defaultTheme.screens,
     },
     fontFamily: {
-      body: ['sans-serif'],
+      body: ['system-ui'],
       display: []
     },
     colors: {},
