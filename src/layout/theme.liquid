@@ -10,6 +10,7 @@
 
   {{ content_for_header }}
 
+  {% include 'css-variables' %}
   {{- 'theme.css' | asset_url | stylesheet_tag -}}
   {% if template %}
     {%- capture template_styles -%}{{- template | remove: 'customers/' -}}.css{%- endcapture -%}

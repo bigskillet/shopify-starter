@@ -27,12 +27,7 @@ module.exports = {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              url: false
-            }
-          },
+          'css-loader',
           'postcss-loader',
           'sass-loader'
         ]
@@ -76,7 +71,7 @@ module.exports = {
       ]
     }),
     new MiniCssExtractPlugin({
-      filename: 'assets/[name].css.liquid'
+      filename: 'assets/[name].css'
     })
   ],
   optimization: {
