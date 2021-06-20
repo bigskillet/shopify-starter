@@ -3,6 +3,7 @@ const globby = require('globby');
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const WebpackShellPluginNext = require('webpack-shell-plugin-next');
@@ -76,6 +77,7 @@ module.exports = {
   ],
   optimization: {
     minimizer: [
+      new CssMinimizerPlugin(),
       new TerserPlugin({
         extractComments: false,
         terserOptions: {
